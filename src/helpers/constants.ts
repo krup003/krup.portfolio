@@ -35,7 +35,7 @@ export const projects: Project[] = [
     name: "FileShare",
     description:
       "A minimalistic typing test app designed to improve typing speed and accuracy with a dynamic leaderboard.",
-    image: "/Project/ProjectImages/fileshare.png",
+    image: "/Project/ProjectImages/FileShare.png",
     link: "https://filesharelive.vercel.app/",
     github: "https://github.com/krup003/Fileshare-tool-monorepo",
     status: "live",
