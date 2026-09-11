@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   title: "Krup Kantesariya - Design Engineer ",
   description: "Krup's Portfolio site.",
   icons: {
-    icon: "/official/logo.png",
+    icon: "/official/logo.svg",
   },
   keywords: [
     "Frontend Developer",
