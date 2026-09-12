@@ -65,13 +65,6 @@ const Navbar: React.FC = () => {
               >
                 Projects
               </button>
-
-              <button
-                className="block w-full rounded-lg px-3 py-3 text-left font-sans font-medium text-white transition-colors hover:bg-[#1C1C1F] hover:text-gray-300"
-                onClick={() => router.push("/artgallery")}
-              >
-                Art Gallery
-              </button>
             </div>
           </div>
         </div>
