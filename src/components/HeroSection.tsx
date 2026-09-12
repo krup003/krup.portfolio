@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
-import { FileDown, Calendar } from "lucide-react";
-import Image from "next/image";
-import { Button } from "./ui/button";
+import { Calendar } from "lucide-react";
 import RingButton from "./RingButton";
 import OpenToWorkNote from "./OpenToWorkNote";
 
@@ -32,9 +30,6 @@ const HeroSection = () => {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3 md:gap-6 sm:mt-6 md:mt-8">
-              {/* <a href="/projectspage" target="_blank" rel="noopener noreferrer">
-                <RingButton text="View my Work" icon={FileDown} />
-              </a> */}
               <a href="https://cal.com/krup-kantesariya-s2opk0/30min?overlayCalendar=true" target="_blank" rel="noopener noreferrer">
                 <RingButton text="Book a Meeting" icon={Calendar} />
               </a>
@@ -47,7 +42,6 @@ const HeroSection = () => {
 
       </div>
 
-      {/* <div className="h-12 border-b-2 border-[#1C1C1F] bg-[#09090B] bg-[radial-gradient(circle,#1D202A_1px,transparent_1px)] [background-size:12px_12px] sm:h-16 sm:[background-size:14px_14px] md:h-18 md:[background-size:16px_16px]"></div> */}
     </div>
   );
 };

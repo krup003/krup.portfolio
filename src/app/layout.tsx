@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
+
 import { Space_Grotesk } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Script from "next/script";
 import { Syne } from "next/font/google";
-import { GeistPixelSquare, GeistPixelGrid, GeistPixelCircle, GeistPixelTriangle, GeistPixelLine } from 'geist/font/pixel';
+import { GeistPixelSquare } from 'geist/font/pixel';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -75,11 +75,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <Script
-          data-website-id="dfid_wVN5yIAv7uo506eTbSUQ5"
-          data-domain="krupkantesariya-portfolio.vercel.app"
-          src="https://datafa.st/js/script.js"
+          src="https://www.googletagmanager.com/gtag/js?id=G-CPKDRP0W53"
           strategy="afterInteractive"
         />
+        <Script id="ga-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CPKDRP0W53');
+          `}
+        </Script>
         <link rel="canonical" href="https://krupkantesariya-portfolio.vercel.app/" />
 
         <script
@@ -108,8 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TooltipProvider>
           {children}
         </TooltipProvider>
-        <Analytics />
-        {/* <CustomCursor /> */}
+
       </body>
     </html>
   );

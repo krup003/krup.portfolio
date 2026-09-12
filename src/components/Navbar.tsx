@@ -1,49 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import CommandMenu from "./CommandMenu";
-import { GitHubIcon } from "@/app/icons/Githubicon";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [isCommandMenuOpen, setIsCommandMenuOpen] =
-    useState<boolean>(false);
-
   const router = useRouter();
 
   const toggleMenu = (): void => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const toggleCommandMenu = (): void => {
-    setIsCommandMenuOpen(!isCommandMenuOpen);
-  };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent): void => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        toggleCommandMenu();
-      }
-    };
-
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    if (!isMobile) {
-      document.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      if (!isMobile) {
-        document.removeEventListener("keydown", handleKeyDown);
-      }
-    };
-  }, []);
 
   return (
     <div className="relative">
@@ -98,16 +66,6 @@ const Navbar: React.FC = () => {
                 Projects
               </button>
 
-              {/* <button
-                className="block w-full rounded-lg px-3 py-3 text-left font-sans font-medium text-white transition-colors hover:bg-[#1C1C1F] hover:text-gray-300"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  toggleCommandMenu();
-                }}
-              >
-                Search
-              </button> */}
-
               <button
                 className="block w-full rounded-lg px-3 py-3 text-left font-sans font-medium text-white transition-colors hover:bg-[#1C1C1F] hover:text-gray-300"
                 onClick={() => router.push("/artgallery")}
@@ -119,10 +77,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* <CommandMenu
-        isOpen={isCommandMenuOpen}
-        onClose={() => setIsCommandMenuOpen(false)}
-      /> */}
     </div>
   );
 };

@@ -4,11 +4,9 @@ import Container from "@/components/Container";
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/Navbar";
 import ProjectsSection from "@/components/ProjectsSection";
-import Graph from "@/components/Graph";
 import SectionHeading from "@/components/SectionHeading";
 import SkillSection from "@/components/SkillsSection/SkillsSection";
 import ExperienceSection from "@/components/ExperienceSection/Experience";
-import SectionIndicator from "@/components/SectionIndicator/SectionIndicator";
 import LoadingScreen from "@/components/InitialLoadShell";
 import GithubActivityCard from "@/components/GithubActivityCard"
 
@@ -16,9 +14,6 @@ const page = () => {
   return (
     <LoadingScreen>
       <Container>
-        {/* <div className="hidden md:block">
-          <SectionIndicator />
-        </div> */}
         <div className="w-full md:px-8">
           <div className="text-white bg-[#09090B]">
             <Navbar />
