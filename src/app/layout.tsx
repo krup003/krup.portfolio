@@ -5,7 +5,7 @@ import { Space_Grotesk } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Script from "next/script";
 import { Syne } from "next/font/google";
-import { GeistPixelSquare } from 'geist/font/pixel';
+import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -65,17 +65,23 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Krup's Portfolio",
     description: "Krup's Portfolio site.",
-    images: ["https://krupkantesariya-portfolio.vercel.app/official/opengraph.png"],
+    images: [
+      "https://krupkantesariya-portfolio.vercel.app/official/opengraph.png",
+    ],
     creator: "@krupkantesariya",
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CPKDRP0W53"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
           strategy="afterInteractive"
         />
         <Script id="ga-init" strategy="afterInteractive">
@@ -83,10 +89,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-CPKDRP0W53');
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
           `}
         </Script>
-        <link rel="canonical" href="https://krupkantesariya-portfolio.vercel.app/" />
+        <link
+          rel="canonical"
+          href="https://krupkantesariya-portfolio.vercel.app/"
+        />
 
         <script
           type="application/ld+json"
@@ -102,7 +111,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 "https://x.com/KrupKantesariya",
               ],
               jobTitle: "Fullstack Developer",
-              image: "https://krupkantesariya-portfolio.vercel.app/official/opengraph.png",
+              image:
+                "https://krupkantesariya-portfolio.vercel.app/official/opengraph.png",
             }),
           }}
         />
@@ -110,11 +120,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <link rel="icon" href="/logo.ico" />
 
-      <body className={` ${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} ${spaceGrotesk.variable} ${syne.variable} antialiased`}>
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
-
+      <body
+        className={` ${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} ${spaceGrotesk.variable} ${syne.variable} antialiased`}
+      >
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );
