@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 
-import GitHubActivity from "@/components/ui/github-activity"
+import GitHubActivity, { GITHUB_GREEN_DARK } from "@/components/ui/github-activity"
 
 const GITHUB_USERNAME = "krup003"
 
@@ -16,7 +16,8 @@ const DARK_TOKENS = {
   "--color-neutral-200": "#0e0e10",
 } as React.CSSProperties
 
-const ACCENT = ["#383838", "#5c5c5d", "#838383", "#868689", "#fafafa"]
+// Real GitHub contribution green scale (dark theme)
+const ACCENT = GITHUB_GREEN_DARK
 
 const Logo = ({ src, invert }: { src: string; invert?: boolean }) => (
   // eslint-disable-next-line @next/next/no-img-element
@@ -98,6 +99,7 @@ export default function GithubActivityCard() {
           accent={ACCENT}
           cellSize={cellSize}
           showMonths
+          showLegend
           style={DARK_TOKENS}
           className="bg-[#0e0e10] [&_button>svg]:text-[#3e4346] [&_img]:p-1.5"
         />

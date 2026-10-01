@@ -25,7 +25,24 @@ export type RepoContribution = {
   href?: string;
 };
 
-const DEFAULT_ACCENT = "#39d353";
+export const GITHUB_GREEN_DARK = [
+  "#151b23", // Level 0: 0 contributions (empty)
+  "#033a16", // Level 1: 1-3 contributions
+  "#196C2E", // Level 2: 4-6 contributions
+  "#2EA043", // Level 3: 7-9 contributions
+  "#56D364", // Level 4: 10+ contributions
+] as const;
+
+export const GITHUB_GREEN_LIGHT = [
+  "#ebedf0", // Level 0: 0 contributions (empty)
+  "#9be9a8", // Level 1: 1-3 contributions
+  "#40c463", // Level 2: 4-6 contributions
+  "#30a14e", // Level 3: 7-9 contributions
+  "#216e39", // Level 4: 10+ contributions
+] as const;
+
+export const GITHUB_GREEN = GITHUB_GREEN_DARK;
+const DEFAULT_ACCENT: readonly string[] = GITHUB_GREEN_DARK;
 const DEFAULT_CELL_SIZE = 11;
 const DEFAULT_LABEL = "Top contributions in:";
 const DEFAULT_MONTHS = 12;
@@ -109,8 +126,30 @@ const DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
 });
 
 function describeDay({ count, date }: Contribution) {
+  const countText = count === 0 ? "No" : count;
   const noun = count === 1 ? "contribution" : "contributions";
-  return `${count} ${noun} on ${DATE_FORMAT.format(new Date(`${date}T00:00:00`))}`;
+  return `${countText} ${noun} on ${DATE_FORMAT.format(new Date(`${date}T00:00:00`))}`;
+}
+
+export function getContributionLevel(
+  day: { count: number; level?: number },
+  maxCount?: number,
+): ContributionLevel {
+  if (day.count === 0) return 0;
+  if (day.level !== undefined && day.level !== null && day.level > 0) {
+    return Math.min(4, Math.max(1, day.level)) as ContributionLevel;
+  }
+  if (maxCount && maxCount > 0) {
+    const quartile = maxCount / 4;
+    if (day.count <= quartile) return 1;
+    if (day.count <= quartile * 2) return 2;
+    if (day.count <= quartile * 3) return 3;
+    return 4;
+  }
+  if (day.count <= 3) return 1;
+  if (day.count <= 6) return 2;
+  if (day.count <= 9) return 3;
+  return 4;
 }
 
 const CALENDAR_API = "https://github-contributions-api.jogruber.de/v4";
@@ -192,7 +231,7 @@ function useGitHubUser(login?: string, skipRepos?: boolean) {
       .then(([contributions, repos]) => {
         if (active && contributions) setData({ contributions, repos });
       })
-      .catch(() => {});
+      .catch(() => { });
 
     return () => {
       active = false;
@@ -215,18 +254,31 @@ function emptyDays(weeks: number): Contribution[] {
   });
 }
 
-function toScale(accent: string | string[]): LevelStyle[] {
+function toScale(accent: string | string[] | readonly string[]): LevelStyle[] {
   if (typeof accent === "string") {
+    if (accent === "#39d353" || accent === "green" || accent === "github") {
+      return GITHUB_GREEN_DARK.map((color) => ({
+        backgroundColor: color,
+        opacity: 1,
+      }));
+    }
     return LEVELS.map((level) => ({
       backgroundColor: accent,
       opacity: LEVEL_OPACITY[level],
     }));
   }
 
-  const colors = accent.length > 4 ? accent : ["transparent", ...accent];
+  const colors =
+    accent.length >= 5
+      ? accent
+      : [GITHUB_GREEN_DARK[0], ...accent];
+
   return LEVELS.map((level) => {
-    const color = colors[level] ?? colors.at(-1) ?? "transparent";
-    return { backgroundColor: color, opacity: color === "transparent" ? 0 : 1 };
+    const color = colors[level] ?? colors.at(-1) ?? GITHUB_GREEN_DARK[0];
+    return {
+      backgroundColor: color,
+      opacity: color === "transparent" ? 0 : 1,
+    };
   });
 }
 
@@ -306,6 +358,7 @@ const ContributionGrid = ({
   cellSize,
   months,
   showMonths,
+  showLegend = true,
   label,
   reduceMotion,
 }: {
@@ -314,6 +367,7 @@ const ContributionGrid = ({
   cellSize: number;
   months: number;
   showMonths: boolean;
+  showLegend?: boolean;
   label: string;
   reduceMotion: boolean | null;
 }) => {
@@ -377,28 +431,55 @@ const ContributionGrid = ({
       >
         {visible.map((week, weekIndex) => (
           <div key={weekIndex} className="flex flex-col" style={{ gap }}>
-            {week.map((day) => (
-              <motion.div
-                key={day.date}
-                onPointerEnter={hover(day)}
-                className="shrink-0 rounded-[3px] bg-foreground/[0.08]"
-                style={{ width: cellSize, height: cellSize }}
-                initial={reduceMotion ? false : { opacity: 0, scale: 0.4 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  ...CELL_FADE,
-                  delay: reduceMotion ? 0 : weekIndex * COLUMN_STAGGER,
-                }}
-              >
-                <div
-                  className="h-full w-full rounded-[3px]"
-                  style={scale[day.level] ?? scale[0]}
-                />
-              </motion.div>
-            ))}
+            {week.map((day) => {
+              const level = getContributionLevel(day);
+              const cellStyle = scale[level] ?? scale[0];
+
+              return (
+                <motion.div
+                  key={day.date}
+                  onPointerEnter={hover(day)}
+                  className="shrink-0 rounded-[2px] overflow-hidden"
+                  style={{ width: cellSize, height: cellSize }}
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.4 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    ...CELL_FADE,
+                    delay: reduceMotion ? 0 : weekIndex * COLUMN_STAGGER,
+                  }}
+                >
+                  <div
+                    className="h-full w-full rounded-[2px] transition-colors"
+                    style={{
+                      // boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.05)",
+                      ...cellStyle,
+                    }}
+                  />
+                </motion.div>
+              );
+            })}
           </div>
         ))}
       </div>
+
+      {showLegend && (
+        <div className="mt-2.5 flex items-center justify-end gap-1.5 px-1 text-[11px] text-foreground/50">
+          <span>Less</span>
+          <div className="flex items-center gap-1">
+            {LEVELS.map((lvl) => (
+              <div
+                key={lvl}
+                className="size-[10px] rounded-[2px]"
+                style={{
+                  boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.05)",
+                  ...(scale[lvl] ?? scale[0]),
+                }}
+              />
+            ))}
+          </div>
+          <span>More</span>
+        </div>
+      )}
 
       <AnimatePresence>
         {hovered && (
@@ -500,10 +581,11 @@ export type GitHubActivityProps = React.ComponentProps<"div"> & {
   contributions?: Contribution[];
   repos?: RepoContribution[];
   year?: number;
-  accent?: string | string[];
+  accent?: string | string[] | readonly string[];
   cellSize?: number;
   months?: number;
   showMonths?: boolean;
+  showLegend?: boolean;
   label?: string;
   defaultOpen?: boolean;
   open?: boolean;
@@ -520,6 +602,7 @@ const GitHubActivity = ({
   cellSize = DEFAULT_CELL_SIZE,
   months = DEFAULT_MONTHS,
   showMonths = false,
+  showLegend = true,
   label = DEFAULT_LABEL,
   defaultOpen = false,
   open: openProp,
@@ -588,7 +671,7 @@ const GitHubActivity = ({
       data-slot="github-activity"
       className={cn(
         "relative max-w-full overflow-hidden rounded-[28px] bg-white p-4 dark:bg-black",
-        repos.length > 0 && "pb-[76px]",
+        repos.length > 0 && "pb-[84px]",
         className,
       )}
       style={{ width, ...style }}
@@ -604,6 +687,7 @@ const GitHubActivity = ({
         cellSize={cellSize}
         months={months}
         showMonths={showMonths}
+        showLegend={showLegend}
         label={heading}
         reduceMotion={reduceMotion}
       />
