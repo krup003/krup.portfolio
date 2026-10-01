@@ -14,7 +14,7 @@ export const projects: Project[] = [
     id: 0,
     name: "CreatikLab",
     description:
-      "A video editing app that allows users to create and edit videos with a variety of tools and effects.",
+      "A modern digital marketing platform for CreatikLab, helping businesses discover and access senior marketing services across SEO, Google Ads, paid media, analytics, automation, AI marketing, and conversion optimization.",
     image: "/Project/ProjectImages/CreatikLab.png",
     link: "https://www.creatiklab.com/",
     status: "live",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
     id: 1,
     name: "WorkOnward",
     description:
-      "A collection of rare, ready-to-use UI components and animations you can actually drop into your next project.",
+      "A US-based map-driven recruitment platform that connects local job seekers with employers, making it easier to discover nearby jobs, find qualified candidates, post jobs, and manage the hiring process.",
     image: "/Project/ProjectImages/workonward.png",
     link: "https://www.workonward.com/en",
     status: "live",
@@ -34,7 +34,7 @@ export const projects: Project[] = [
     id: 2,
     name: "FileShare",
     description:
-      "A minimalistic typing test app designed to improve typing speed and accuracy with a dynamic leaderboard.",
+      "A lightweight file-sharing platform that lets users upload files, generate shareable links, and download files without an account, with optional OTP/password protection for private sharing.",
     image: "/Project/ProjectImages/FileShare.png",
     link: "https://filesharelive.vercel.app/",
     github: "https://github.com/krup003/Fileshare-tool-monorepo",
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     id: 3,
     name: "Crompt AI",
     description:
-      "A SaaS landing page with interactive animations built using modern frontend technologies.",
+      "An all-in-one AI platform that brings multiple AI models and tools into one workspace, enabling users to chat, code, research, analyze data, generate images, search the web, and create structured outputs without switching between different AI platforms.",
     image: "/Project/ProjectImages/Crompt AI.png",
     link: "https://crompt.ai/chat",
     status: "live",
@@ -56,9 +56,9 @@ export const projects: Project[] = [
     id: 4,
     name: "CodeShare",
     description:
-      "An app that lets users apply anime overlays and custom images on top of their photos.",
+      "A lightweight code-sharing platform that lets developers paste code, generate a unique shareable link, and easily share code with others for collaboration, debugging, and code reviews.",
     image: "/Project/ProjectImages/Codeshare.png",
-    link: "https://anieditor.vercel.app",
+    link: "https://onlinecodeshare.vercel.app/",
     github: "https://github.com/krup003/CodeShare",
     status: "live",
     projectBg: "/Project/ProjectBackground/anieditor.png",
